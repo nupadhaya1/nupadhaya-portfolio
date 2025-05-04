@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Analytics } from "@vercel/analytics/react";
 
 // images
 import nikhilPNG from "../images/nikhil.png";
