@@ -26,7 +26,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center gap-2">
             <Button asChild className="w-1/2">
               <Link
-                href="/resume.pdf"
+                href="/Nikhil Upadhaya Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
               >
