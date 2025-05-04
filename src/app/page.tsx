@@ -9,9 +9,9 @@ import { NewspaperIcon, Github } from "lucide-react";
 export default function HomePage() {
   return (
     <main className="flex h-screen items-center justify-center">
-      <div className="flex h-screen w-full rounded-lg p-8 shadow-md">
+      <div className="flex h-screen w-full flex-col-reverse rounded-lg p-8 shadow-md md:flex-row">
         {/* right side */}
-        <div className="w-1/2 rounded-lg pr-6">
+        <div className="w-full rounded-lg pr-6 md:w-1/2">
           <h1 className="my-4 text-3xl font-bold">
             Hello, I'm Nikhil Upadhaya
           </h1>
@@ -49,7 +49,7 @@ export default function HomePage() {
         </div>
 
         {/* left side */}
-        <div className="relative w-1/2 overflow-hidden">
+        <div className="relative w-full flex-1 overflow-hidden md:w-1/2">
           <Image
             src="/nikhil.png"
             alt="Nikhil Upadhaya"
