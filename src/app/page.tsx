@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// images
-import nikhilPNG from "../images/nikhil.png";
-
 // shadcn/ui imports
 import { Button } from "@/components/ui/button";
 
