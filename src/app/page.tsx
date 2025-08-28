@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="flex h-screen w-full flex-col-reverse rounded-lg p-8 shadow-md md:flex-row">
-        {/* right side */}
+        {/* left side */}
         <div className="w-full rounded-lg pr-6 md:w-1/2">
           <h1 className="my-4 text-3xl font-bold">
             Hello, I'm Nikhil Upadhaya
@@ -23,8 +23,8 @@ export default function HomePage() {
 
           <hr className="my-4 border-t-2 border-black" />
 
-          <div className="flex items-center justify-center gap-2">
-            <Button asChild className="w-1/2">
+          <div className="my-4 flex items-center justify-center gap-2">
+            <Button asChild className="flex-1">
               <Link
                 href="/Nikhil Upadhaya Resume.pdf"
                 target="_blank"
@@ -35,7 +35,7 @@ export default function HomePage() {
               </Link>
             </Button>
 
-            <Button asChild className="w-1/2">
+            <Button asChild className="flex-1">
               <Link
                 href="https://github.com/nupadhaya1"
                 target="_blank"
@@ -45,10 +45,14 @@ export default function HomePage() {
                 Github
               </Link>
             </Button>
+
+            <Button asChild className="flex-1">
+              <Link href="/projects">Projects</Link>
+            </Button>
           </div>
         </div>
 
-        {/* left side */}
+        {/* right side */}
         <div className="relative w-full flex-1 overflow-hidden md:w-1/2">
           <Image
             src="/nikhil.png"

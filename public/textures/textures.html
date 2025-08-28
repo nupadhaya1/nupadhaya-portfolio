@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Textures</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #000;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        color: #fff;
+      }
+
+      .key {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .key-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .key-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .key-blue {
+        background-color: #3498db;
+      }
+
+      .key-red {
+        background-color: #e74c3c;
+      }
+
+      h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #fff;
+      }
+
+      .title {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .button-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 800px;
+        width: 100%;
+      }
+
+      .button {
+        color: #fff;
+        padding: 20px 40px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .button-blue {
+        background-color: #3498db;
+      }
+
+      .button-red {
+        background-color: #e74c3c;
+      }
+
+      .button:hover {
+        filter: brightness(1.2);
+      }
+
+      .button a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Graphics Final Custom Textures</h1>
+
+      <div class="key">
+        <div class="key-item">
+          <div class="key-color key-blue"></div>
+          <span>Three.js Textures</span>
+        </div>
+        <div class="key-item">
+          <div class="key-color key-red"></div>
+          <span>p5.js Textures</span>
+        </div>
+      </div>
+
+      <div class="button-grid">
+        <a href="3dp/3dp.html" target="_blank" class="button button-blue">3D Printed Texture</a>
+        <a href="blk cf/blk_cf.html" target="_blank" class="button button-blue"
+          >Black Carbon Fiber</a
+        >
+        <a href="blk cf 2/blk_cf_2.html" target="_blank" class="button button-blue"
+          >Black Carbon Fiber 2</a
+        >
+        <a href="red cf/red_cf.html" target="_blank" class="button button-blue">Red Carbon Fiber</a>
+        <a href="aluminum/aluminum.html" target="_blank" class="button button-red">Aluminum</a>
+        <a href="black steel/blk_steel.html" target="_blank" class="button button-red"
+          >Black Steel</a
+        >
+        <a href="grid concrete/grid_concrete.html" target="_blank" class="button button-red"
+          >Grid Concrete</a
+        >
+        <a href="top grid/top grid.html" target="_blank" class="button button-red">Top Grid</a>
+        <a href="top plate/top plate.html" target="_blank" class="button button-red">Top Plate</a>
+        <a href="weapon steel/weapon_steel.html" target="_blank" class="button button-red"
+          >Weapon Steel</a
+        >
+        <a
+          href="weird brushed metal/weird_brushed_metal.html"
+          target="_blank"
+          class="button button-red"
+          >Weird Brushed Metal</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

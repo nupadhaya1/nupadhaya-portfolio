@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Metallic Texture Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        background: #222;
+        min-height: 100vh;
+      }
+      canvas {
+        border: none; /* Removed the white border */
+      }
+      h1 {
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      .canvas-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .canvas-wrapper {
+        text-align: center;
+      }
+      .controls {
+        margin-top: 20px;
+      }
+      .controls button {
+        margin: 10px;
+        padding: 10px;
+        background-color: white;
+        color: #222;
+        border: none;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Metallic Texture Generator</h1>
+    <div class="canvas-container">
+      <div class="canvas-wrapper">
+        <p style="color: white; text-align: center">Base Texture</p>
+        <canvas id="baseCanvas" width="256" height="256"></canvas>
+      </div>
+      <div class="canvas-wrapper">
+        <p style="color: white; text-align: center">Normal Map</p>
+        <canvas id="normalCanvas" width="256" height="256"></canvas>
+      </div>
+      <div class="canvas-wrapper">
+        <p style="color: white; text-align: center">Roughness Map</p>
+        <canvas id="roughnessCanvas" width="256" height="256"></canvas>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="saveBaseMap">Save Base Texture</button>
+      <button id="saveNormalMap">Save Normal Map</button>
+      <button id="saveRoughnessMap">Save Roughness Map</button>
+    </div>
+
+    <script>
+      const canvasSize = 512; // Original resolution for texture generation
+      const previewSize = 256; // Preview resolution for display
+      const gridSize = 8; // 8x8 grid
+      let baseTexture, normalMap, roughnessMap;
+
+      function setup() {
+        // Create high-resolution canvases
+        baseTexture = createGraphics(canvasSize, canvasSize);
+        normalMap = createGraphics(canvasSize, canvasSize);
+        roughnessMap = createGraphics(canvasSize, canvasSize);
+
+        // Generate textures
+        generateBaseTexture(baseTexture);
+        generateNormalMap(normalMap);
+        generateRoughnessMap(roughnessMap);
+
+        // Render scaled-down previews
+        renderPreview("baseCanvas", baseTexture);
+        renderPreview("normalCanvas", normalMap);
+        renderPreview("roughnessCanvas", roughnessMap);
+
+        // Add save functionality
+        document.getElementById("saveBaseMap").onclick = () =>
+          saveTexture(baseTexture, "base_texture");
+        document.getElementById("saveNormalMap").onclick = () =>
+          saveTexture(normalMap, "normal_map");
+        document.getElementById("saveRoughnessMap").onclick = () =>
+          saveTexture(roughnessMap, "roughness_map");
+      }
+
+      function generateBaseTexture(canvas) {
+        canvas.noStroke();
+        canvas.noiseDetail(4, 0.5);
+        for (let y = 0; y < gridSize; y++) {
+          for (let x = 0; x < gridSize; x++) {
+            const baseColor = 180;
+            const metallicNoise = canvas.noise(x * 0.3, y * 0.3) * 255;
+            const randomShine = random(-20, 20);
+            canvas.fill(baseColor + randomShine, baseColor + randomShine, baseColor + randomShine);
+            canvas.rect(
+              x * (canvasSize / gridSize),
+              y * (canvasSize / gridSize),
+              canvasSize / gridSize,
+              canvasSize / gridSize
+            );
+          }
+        }
+      }
+
+      function generateNormalMap(canvas) {
+        canvas.noStroke();
+        canvas.noiseDetail(4, 0.6);
+        for (let y = 0; y < gridSize; y++) {
+          for (let x = 0; x < gridSize; x++) {
+            const dx = canvas.noise((x + 1) * 0.3, y * 0.3) - canvas.noise((x - 1) * 0.3, y * 0.3);
+            const dy = canvas.noise(x * 0.3, (y + 1) * 0.3) - canvas.noise(x * 0.3, (y - 1) * 0.3);
+            const normalColor = color((dx + 1) * 128, (dy + 1) * 128, 255);
+            canvas.fill(normalColor);
+            canvas.rect(
+              x * (canvasSize / gridSize),
+              y * (canvasSize / gridSize),
+              canvasSize / gridSize,
+              canvasSize / gridSize
+            );
+          }
+        }
+      }
+
+      function generateRoughnessMap(canvas) {
+        canvas.noStroke();
+        canvas.noiseDetail(6, 0.7);
+        for (let y = 0; y < gridSize; y++) {
+          for (let x = 0; x < gridSize; x++) {
+            const noiseValue = canvas.noise(x * 0.3, y * 0.3);
+            const gray = noiseValue * 255;
+            canvas.fill(gray);
+            canvas.rect(
+              x * (canvasSize / gridSize),
+              y * (canvasSize / gridSize),
+              canvasSize / gridSize,
+              canvasSize / gridSize
+            );
+          }
+        }
+      }
+
+      function renderPreview(id, graphics) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext("2d");
+        canvas.width = previewSize;
+        canvas.height = previewSize;
+        ctx.drawImage(graphics.elt, 0, 0, previewSize, previewSize);
+      }
+
+      function saveTexture(graphics, name) {
+        const tempCanvas = createGraphics(canvasSize, canvasSize);
+        tempCanvas.image(graphics, 0, 0);
+        tempCanvas.save(name);
+      }
+    </script>
+  </body>
+</html>

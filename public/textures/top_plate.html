@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Steel Texture</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
+    <style>
+      canvas {
+        display: block;
+        margin: 0 auto;
+      }
+      .controls {
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <label for="baseColor">Choose Base Steel Color: </label>
+      <input type="color" id="baseColor" value="#7f7f7f" />
+      <br /><br />
+      <label for="noiseType">Choose Noise Pattern: </label>
+      <select id="noiseType">
+        <option value="fractal">Fractal Noise</option>
+        <option value="distorted">Distorted Perlin Noise</option>
+        <option value="simplex">Simplex Noise</option>
+        <option value="turbulent">Turbulent Noise</option>
+      </select>
+      <br /><br />
+      <label for="noiseIntensity">Noise Intensity: </label>
+      <input type="range" id="noiseIntensity" min="0" max="1" step="0.01" value="0.5" />
+      <br /><br />
+      <button id="saveSteelTexture">Save Steel Texture</button>
+      <button id="saveRoughnessMap">Save Roughness Map</button>
+      <button id="saveNormalMap">Save Normal Map</button>
+    </div>
+    <script>
+      let steelTexture, roughnessMap, normalMap;
+
+      function setup() {
+        createCanvas(512, 512, WEBGL);
+        noLoop();
+        generateTextures();
+
+        // Buttons for saving textures
+        select("#saveSteelTexture").mousePressed(() => saveGraphics(steelTexture, "steel_texture"));
+        select("#saveRoughnessMap").mousePressed(() => saveGraphics(roughnessMap, "roughness_map"));
+        select("#saveNormalMap").mousePressed(() => saveGraphics(normalMap, "normal_map"));
+
+        // Update textures when controls change
+        select("#baseColor").input(generateTextures);
+        select("#noiseType").changed(generateTextures);
+        select("#noiseIntensity").input(generateTextures);
+      }
+
+      function generateTextures() {
+        const baseColor = select("#baseColor").value();
+        const noiseType = select("#noiseType").value();
+        const noiseIntensity = parseFloat(select("#noiseIntensity").value());
+
+        // Generate Steel Texture
+        steelTexture = createGraphics(1024, 1024);
+        steelTexture.loadPixels();
+        for (let x = 0; x < steelTexture.width; x++) {
+          for (let y = 0; y < steelTexture.height; y++) {
+            let noiseValue = getNoiseValue(x, y, noiseType, noiseIntensity);
+            let base = color(baseColor);
+            let damageFactor = map(noiseValue, 0, 1, 0.6, 1.2);
+            let r = red(base) * damageFactor;
+            let g = green(base) * damageFactor * random(0.9, 1.1);
+            let b = blue(base) * damageFactor * random(0.8, 1.0);
+
+            steelTexture.set(x, y, color(r, g, b));
+          }
+        }
+        steelTexture.updatePixels();
+
+        // Generate Roughness Map
+        roughnessMap = createGraphics(1024, 1024);
+        roughnessMap.loadPixels();
+        for (let x = 0; x < roughnessMap.width; x++) {
+          for (let y = 0; y < roughnessMap.height; y++) {
+            let noiseValue = getNoiseValue(x, y, noiseType, noiseIntensity);
+            let gray = map(noiseValue, 0, 1, 50, 255);
+            roughnessMap.set(x, y, color(gray));
+          }
+        }
+        roughnessMap.updatePixels();
+
+        // Generate Normal Map
+        normalMap = createGraphics(1024, 1024);
+        normalMap.loadPixels();
+        for (let x = 0; x < normalMap.width; x++) {
+          for (let y = 0; y < normalMap.height; y++) {
+            let dx =
+              getNoiseValue(x + 1, y, noiseType, noiseIntensity) -
+              getNoiseValue(x - 1, y, noiseType, noiseIntensity);
+            let dy =
+              getNoiseValue(x, y + 1, noiseType, noiseIntensity) -
+              getNoiseValue(x, y - 1, noiseType, noiseIntensity);
+            let normalColor = color((dx + 1) * 128, (dy + 1) * 128, 255);
+            normalMap.set(x, y, normalColor);
+          }
+        }
+        normalMap.updatePixels();
+
+        // Draw all maps (scaled for preview)
+        background(0);
+        image(steelTexture, -256, -256, 256, 256);
+        image(roughnessMap, 0, -256, 256, 256);
+        image(normalMap, -256, 0, 256, 256);
+      }
+
+      function saveGraphics(graphics, name) {
+        const offscreenCanvas = createGraphics(1024, 1024);
+        offscreenCanvas.image(graphics, 0, 0);
+        offscreenCanvas.save(name);
+      }
+
+      function getNoiseValue(x, y, type, intensity) {
+        let noiseValue;
+        switch (type) {
+          case "fractal":
+            noiseValue = noise(x * 0.02, y * 0.02);
+            noiseValue = pow(noiseValue, 3);
+            break;
+          case "distorted":
+            let offset = noise(x * 0.01, y * 0.01) * 50;
+            noiseValue = noise((x + offset) * 0.02, (y + offset) * 0.02);
+            break;
+          case "simplex":
+            noiseValue = noise(x * 0.04, y * 0.04) * intensity;
+            break;
+          case "turbulent":
+            noiseValue = abs(noise(x * 0.02, y * 0.02) - 0.5) * 2;
+            break;
+          default:
+            noiseValue = noise(x * 0.02, y * 0.02);
+        }
+        return constrain(noiseValue + random(-0.1, 0.1) * intensity, 0, 1);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>blk_steel
+    </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
+    <style>
+      canvas {
+        display: block;
+        margin: 0 auto;
+      }
+      .controls {
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <label for="baseColor">Choose Metal Color: </label>
+      <input type="color" id="baseColor" value="#2e2e2e" />
+      <br /><br />
+      <button id="saveColorMap">Save Color Map</button>
+      <button id="saveRoughnessMap">Save Roughness Map</button>
+      <button id="saveNormalMap">Save Normal Map</button>
+    </div>
+    <script>
+      let colorMap, roughnessMap, normalMap;
+
+      function setup() {
+        createCanvas(512, 512, WEBGL);
+        noLoop();
+        generateMaps();
+
+        // Buttons for saving textures
+        select("#saveColorMap").mousePressed(() => saveGraphics(colorMap, "color_map"));
+        select("#saveRoughnessMap").mousePressed(() => saveGraphics(roughnessMap, "roughness_map"));
+        select("#saveNormalMap").mousePressed(() => saveGraphics(normalMap, "normal_map"));
+
+        // Update maps when the base color changes
+        select("#baseColor").input(generateMaps);
+      }
+
+      function generateMaps() {
+        const baseColor = select("#baseColor").value(); // Get the selected base color
+
+        // Generate Color Map
+        colorMap = createGraphics(1024, 1024);
+        colorMap.noiseDetail(4, 0.5);
+        colorMap.loadPixels();
+        for (let x = 0; x < colorMap.width; x++) {
+          for (let y = 0; y < colorMap.height; y++) {
+            let noiseValue = colorMap.noise(x * 0.01, y * 0.01);
+            let base = color(baseColor); // Convert HEX to p5 color object
+            let r = red(base) + noiseValue * 50; // Add noise-based variation
+            let g = green(base) + noiseValue * 50;
+            let b = blue(base) + noiseValue * 50;
+            colorMap.set(x, y, color(r, g, b));
+          }
+        }
+        colorMap.updatePixels();
+
+        // Generate Roughness Map
+        roughnessMap = createGraphics(1024, 1024);
+        roughnessMap.noiseDetail(8, 0.8);
+        roughnessMap.loadPixels();
+        for (let x = 0; x < roughnessMap.width; x++) {
+          for (let y = 0; y < roughnessMap.height; y++) {
+            let noiseValue = roughnessMap.noise(x * 0.02, y * 0.02);
+            let gray = noiseValue * 255;
+            roughnessMap.set(x, y, color(gray));
+          }
+        }
+        roughnessMap.updatePixels();
+
+        // Generate Normal Map
+        normalMap = createGraphics(1024, 1024);
+        normalMap.noiseDetail(4, 0.6);
+        normalMap.loadPixels();
+        for (let x = 0; x < normalMap.width; x++) {
+          for (let y = 0; y < normalMap.height; y++) {
+            let dx =
+              normalMap.noise((x + 1) * 0.01, y * 0.01) - normalMap.noise((x - 1) * 0.01, y * 0.01);
+            let dy =
+              normalMap.noise(x * 0.01, (y + 1) * 0.01) - normalMap.noise(x * 0.01, (y - 1) * 0.01);
+            let normalColor = color((dx + 1) * 128, (dy + 1) * 128, 255);
+            normalMap.set(x, y, normalColor);
+          }
+        }
+        normalMap.updatePixels();
+
+        // Draw all maps (scaled to fit the canvas)
+        background(255); // Set the background color to white
+        push();
+        translate(-256, -256); // Position the color map at the top-left
+        image(colorMap, 0, 0, 256, 256);
+        translate(256, 0); // Position the roughness map to the right of the color map
+        image(roughnessMap, 0, 0, 256, 256);
+        translate(-128, 256); // Position the normal map below the middle of the top row
+        image(normalMap, 0, 0, 256, 256);
+        pop();
+      }
+
+      function saveGraphics(graphics, name) {
+        // Create an offscreen canvas to ensure the downloaded resolution is 1024x1024
+        const offscreenCanvas = createGraphics(1024, 1024);
+        offscreenCanvas.image(graphics, 0, 0);
+        offscreenCanvas.save(name);
+      }
+    </script>
+  </body>
+</html>

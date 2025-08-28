@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brushed Metal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <style>
+      canvas {
+        display: block;
+        margin: 20px auto;
+      }
+      .controls {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <label for="metalColor">Select Base Metal Color: </label>
+      <input type="color" id="metalColor" value="#A9A9A9" />
+      <br /><br />
+      <label for="noiseAmount">Noise Amount: </label>
+      <input type="range" id="noiseAmount" min="0" max="1" step="0.1" value="0.5" />
+      <br /><br />
+      <button id="downloadColorMap">Download Color Map</button>
+      <button id="downloadRoughnessMap">Download Roughness Map</button>
+      <button id="downloadNormalMap">Download Normal Map</button>
+    </div>
+    <script>
+      let colorMap, roughnessMap, normalMap;
+
+      function setup() {
+        createCanvas(1024, 341);
+        noLoop();
+        generateMaps();
+
+        select("#downloadColorMap").mousePressed(() => saveGraphics(colorMap, "color_map"));
+        select("#downloadRoughnessMap").mousePressed(() =>
+          saveGraphics(roughnessMap, "roughness_map")
+        );
+        select("#downloadNormalMap").mousePressed(() => saveGraphics(normalMap, "normal_map"));
+
+        select("#metalColor").input(generateMaps);
+        select("#noiseAmount").input(generateMaps);
+      }
+
+      function generateMaps() {
+        const baseColor = select("#metalColor").value();
+        const noiseAmount = select("#noiseAmount").value();
+
+        colorMap = createGraphics(1024, 1024);
+        colorMap.noiseDetail(4, 0.5);
+        colorMap.loadPixels();
+        for (let x = 0; x < colorMap.width; x++) {
+          for (let y = 0; y < colorMap.height; y++) {
+            let noiseValue = colorMap.noise(x * 0.01, y * 0.01) * noiseAmount;
+
+            let streaks = 0.7 + sin(y * 0.5 + noiseValue * 5) * 0.15 + noiseValue * 0.1;
+
+            let base = color(baseColor);
+            let r = red(base) * streaks;
+            let g = green(base) * streaks;
+            let b = blue(base) * streaks;
+
+            colorMap.set(x, y, color(r, g, b));
+          }
+        }
+        colorMap.updatePixels();
+
+        roughnessMap = createGraphics(1024, 1024);
+        roughnessMap.noiseDetail(8, 0.8);
+        roughnessMap.loadPixels();
+        for (let x = 0; x < roughnessMap.width; x++) {
+          for (let y = 0; y < roughnessMap.height; y++) {
+            let noiseValue = roughnessMap.noise(x * 0.01, y * 0.01) * noiseAmount;
+            let streaks = sin(y * 0.5 + noiseValue * 5) * 0.2 + noiseValue;
+            let brightness = map(streaks, 0, 1, 50, 200);
+            roughnessMap.set(x, y, color(brightness));
+          }
+        }
+        roughnessMap.updatePixels();
+
+        normalMap = createGraphics(1024, 1024);
+        normalMap.noiseDetail(4, 0.5);
+        normalMap.loadPixels();
+        for (let x = 0; x < normalMap.width; x++) {
+          for (let y = 0; y < normalMap.height; y++) {
+            let dx =
+              normalMap.noise((x + 1) * 0.01, y * 0.01) - normalMap.noise((x - 1) * 0.01, y * 0.01);
+            let dy =
+              normalMap.noise(x * 0.01, (y + 1) * 0.01) - normalMap.noise(x * 0.01, (y - 1) * 0.01);
+            let streaks = sin(y * 0.5) * 0.5 + 0.5;
+            let nx = (dx + 1) * 128 * streaks;
+            let ny = (dy + 1) * 128 * streaks;
+            normalMap.set(x, y, color(nx, ny, 255));
+          }
+        }
+        normalMap.updatePixels();
+
+        clear();
+        image(colorMap, 0, 0, 341, 341); // Left
+        image(roughnessMap, 341, 0, 341, 341); // Center
+        image(normalMap, 682, 0, 341, 341); // Right
+      }
+
+      function saveGraphics(graphics, name) {
+        const offscreenCanvas = createGraphics(1024, 1024);
+        offscreenCanvas.image(graphics, 0, 0);
+        offscreenCanvas.save(name);
+      }
+    </script>
+  </body>
+</html>
