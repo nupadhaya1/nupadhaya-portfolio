@@ -214,7 +214,9 @@ export default function TexturesHubPage() {
               <Filter className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-indigo-300" />
               <select
                 value={tech}
-                onChange={(e) => setTech(e.target.value as any)}
+                onChange={(e) =>
+                  setTech(e.target.value as "three" | "p5" | "all")
+                }
                 className="cursor-pointer appearance-none rounded-lg border border-indigo-500/30 bg-slate-800/50 py-3 pr-8 pl-10 text-base text-slate-100 shadow-sm transition-all duration-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 focus:outline-none"
                 aria-label="Filter by technology"
               >
@@ -241,7 +243,7 @@ export default function TexturesHubPage() {
         </div>
 
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((t, index) => (
+          {filtered.map((t) => (
             <li key={t.id} className="group">
               <Card className="relative h-full overflow-hidden border-indigo-500/20 bg-gradient-to-br from-slate-900/90 to-indigo-900/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/20">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

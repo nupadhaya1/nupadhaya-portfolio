@@ -4,7 +4,7 @@ import Link from "next/link";
 // shadcn/ui imports
 import { Button } from "@/components/ui/button";
 
-import { NewspaperIcon, Github } from "lucide-react";
+import { NewspaperIcon, Github, ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -46,9 +46,32 @@ export default function HomePage() {
               </Link>
             </Button>
 
-            <Button asChild className="flex-1">
-              <Link href="/projects">Projects</Link>
-            </Button>
+            <div className="relative flex-1">
+              <Button
+                asChild
+                className="w-full transform text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg, hsla(8, 97%, 55%, 1) 0%, hsla(36, 96%, 52%, 1) 100%)",
+                }}
+              >
+                <Link
+                  href="/projects"
+                  className="flex items-center justify-center"
+                >
+                  Projects
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+
+              {/* Floating animated dialog */}
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 transform animate-bounce">
+                <div className="relative rounded-lg bg-slate-800 px-3 py-2 text-xs whitespace-nowrap text-white shadow-lg">
+                  Click me! 🚀{/* Speech bubble arrow */}
+                  <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 transform bg-slate-800"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
