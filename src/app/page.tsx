@@ -23,7 +23,7 @@ export default function HomePage() {
 
           <hr className="my-4 border-t-2 border-black" />
 
-          <div className="my-4 flex items-center justify-center gap-2">
+          <div className="my-4 flex flex-col items-center justify-center gap-2 md:flex-row">
             <Button asChild className="flex-1">
               <Link
                 href="/Nikhil Upadhaya Resume.pdf"

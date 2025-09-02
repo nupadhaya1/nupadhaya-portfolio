@@ -244,11 +244,12 @@ export default function TexturesHubPage() {
 
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((t) => (
-            <li key={t.id} className="group">
-              <Card className="relative h-full overflow-hidden border-indigo-500/20 bg-gradient-to-br from-slate-900/90 to-indigo-900/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/20">
+            <li key={t.id} className="group h-full">
+              <Card className="relative flex h-full flex-col overflow-hidden border-indigo-500/20 bg-gradient-to-br from-slate-900/90 to-indigo-900/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-indigo-400/50 hover:shadow-2xl hover:shadow-indigo-500/20">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                <CardHeader className="relative z-10 pb-4">
+                {/* Header grows to fill extra space */}
+                <CardHeader className="relative z-10 grow pb-4">
                   <CardTitle className="mb-2 flex items-start justify-between gap-3 text-lg font-semibold">
                     <span className="leading-tight text-indigo-100">
                       {t.name}
@@ -264,12 +265,15 @@ export default function TexturesHubPage() {
                       {t.tech === "three" ? "Three.js" : "p5.js"}
                     </Badge>
                   </CardTitle>
-                  <CardDescription className="leading-relaxed text-indigo-200/90">
+
+                  {/* Optional: add line clamping if plugin installed */}
+                  <CardDescription className="line-clamp-2 leading-relaxed text-indigo-200/90">
                     {t.description}
                   </CardDescription>
                 </CardHeader>
 
-                <CardFooter className="relative z-10 flex flex-col gap-4 pt-0">
+                {/* Footer sits at bottom */}
+                <CardFooter className="relative z-10 mt-auto flex flex-col gap-4 pt-0">
                   <div className="flex w-full flex-wrap gap-2">
                     {t.tags.map((tag) => (
                       <Badge
@@ -282,20 +286,13 @@ export default function TexturesHubPage() {
                     ))}
                   </div>
 
-                  <div className="flex w-full gap-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => setOpen(t)}
-                      className="flex-1 border-0 bg-gradient-to-r from-indigo-600 to-purple-600 font-medium text-white transition-all duration-200 hover:scale-105 hover:from-indigo-500 hover:to-purple-500"
-                    >
-                      <Eye className="mr-2 h-4 w-4" /> Preview
-                    </Button>
+                  {/* Single Open button with gradient styling */}
+                  <div className="flex w-full">
                     <Button
                       asChild
+                      variant="secondary"
                       size="sm"
-                      variant="outline"
-                      className="flex-1 border-slate-600/50 bg-slate-800/50 font-medium text-slate-200 transition-all duration-200 hover:scale-105 hover:border-slate-500/50 hover:bg-slate-700/50"
+                      className="flex-1 border-0 bg-gradient-to-r from-indigo-600 to-purple-600 font-medium text-white transition-all duration-200 hover:scale-105 hover:from-indigo-500 hover:to-purple-500"
                     >
                       <Link
                         href={t.url}
