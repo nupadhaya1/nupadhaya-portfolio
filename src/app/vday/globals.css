@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: var(--font-lora), Georgia, "Times New Roman", serif;
+  --font-serif: var(--font-lora), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-dancing), cursive;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+/* ───── Pink Pastel + Red Valentine Palette ───── */
+:root {
+  --radius: 1rem;
+
+  /* Soft blush background — hsl(350, 100%, 98%) */
+  --background: oklch(0.97 0.015 350);
+  /* Dark red-brown for readable body text */
+  --foreground: oklch(0.25 0.06 25);
+
+  /* White-ish card with a warm tint */
+  --card: oklch(0.99 0.008 350);
+  --card-foreground: oklch(0.25 0.06 25);
+
+  /* Popover mirrors card */
+  --popover: oklch(0.99 0.008 350);
+  --popover-foreground: oklch(0.25 0.06 25);
+
+  /* Primary — vivid valentine red */
+  --primary: oklch(0.50 0.24 25);
+  --primary-foreground: oklch(0.99 0.005 0);
+
+  /* Secondary — light pink blush */
+  --secondary: oklch(0.93 0.04 350);
+  --secondary-foreground: oklch(0.35 0.10 25);
+
+  /* Muted — dusty pink */
+  --muted: oklch(0.92 0.025 350);
+  --muted-foreground: oklch(0.48 0.06 25);
+
+  /* Accent — soft rose */
+  --accent: oklch(0.91 0.045 350);
+  --accent-foreground: oklch(0.30 0.10 25);
+
+  /* Destructive — pure red */
+  --destructive: oklch(0.55 0.26 27);
+
+  /* Borders & inputs — faint pink lines */
+  --border: oklch(0.90 0.03 350);
+  --input: oklch(0.90 0.03 350);
+  --ring: oklch(0.50 0.22 25);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-serif);
+  }
+}
+
+/* ───── Typography ───── */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* ───── Utility ───── */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ───── Floating Hearts Animation ───── */
+@keyframes float-up {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--heart-opacity, 0.3);
+  }
+  90% {
+    opacity: var(--heart-opacity, 0.3);
+  }
+  100% {
+    transform: translateY(-110vh) rotate(45deg) scale(0.5);
+    opacity: 0;
+  }
+}
+.animate-float-up {
+  animation: float-up linear infinite;
+}
+
+/* ───── Password Gate Animations ───── */
+@keyframes gate-float-up {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+  10% { opacity: 0.25; }
+  90% { opacity: 0.25; }
+  100% { transform: translateY(-110vh) rotate(45deg) scale(0.5); opacity: 0; }
+}
+.gate-float-up {
+  animation: gate-float-up linear infinite;
+}
+
+@keyframes gate-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
+}
+.gate-shake {
+  animation: gate-shake 0.5s ease-in-out;
+}
+
+@keyframes gate-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gate-fade-in {
+  animation: gate-fade-in 0.3s ease-out;
+}
