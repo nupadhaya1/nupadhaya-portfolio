@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -110,10 +111,12 @@ export default function ProjectsPage() {
                     <div
                       className={`absolute inset-0 bg-gradient-to-br ${project.gradient} z-10 opacity-20`}
                     />
-                    <img
+                    <Image
                       src={project.imageUrl || "/placeholder.svg"}
                       alt={`${project.title} screenshot`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:opacity-100"
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:opacity-100"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
                 </div>
