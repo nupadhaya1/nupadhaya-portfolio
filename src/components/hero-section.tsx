@@ -12,12 +12,13 @@ export function HeroSection() {
           <Heart className="w-6 h-6 text-primary fill-primary" />
         </div>
         <h1 className="text-6xl md:text-8xl lg:text-9xl font-display text-primary mb-6 text-balance leading-tight">
-          Hey Beautiful
+          Hi Ish!
         </h1>
         <p className="text-xl md:text-2xl text-foreground leading-relaxed max-w-xl mx-auto">
-          {"I made this just for you, because you deserve something as special as you are. Scroll down for a very important question."}
+          {/* {"I made this just for you, because you deserve something as special as you are. Scroll down for a very important question."} */}
+          {"I made this for you, because you deserve the world! Scroll down for a very important question..."}
         </p>
-        <div className="mt-10">
+        <div className="mt-6">
           <a
             href="#question"
             className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-full font-serif text-lg hover:scale-105 transition-transform duration-300"
@@ -42,6 +43,7 @@ export function HeroSection() {
           />
         </svg>
       </div>
+      
     </section>
   )
 }

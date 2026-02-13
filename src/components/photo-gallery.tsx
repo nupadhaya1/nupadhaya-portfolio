@@ -1,16 +1,16 @@
 import Image from "next/image"
 
 const photos = [
-  { src: "/images/couple-1.jpg", alt: "Our first walk together" },
-  { src: "/images/couple-2.jpg", alt: "Coffee date" },
-  { src: "/images/couple-3.jpg", alt: "Watching the sunset" },
+  { src: "/nyc.jpeg", alt: "Dumbo NYC" },
+  { src: "/nashville.jpeg", alt: "Nashville solo g7x" },
+  { src: "/nye.jpeg", alt: "NYE" },
 ]
 
 export function PhotoGallery() {
   return (
     <section className="py-16 px-4">
       <h2 className="text-3xl md:text-4xl font-display text-center text-foreground mb-2">
-        Our Favorite Moments
+        Some of my favorite photos together
       </h2>
       <p className="text-center text-muted-foreground mb-12 text-lg">
         Every moment with you is my favorite

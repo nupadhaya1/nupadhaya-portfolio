@@ -15,10 +15,10 @@ export function QuestionSection() {
             <Heart className="w-20 h-20 mx-auto text-primary fill-primary mb-6" />
           </div>
           <h2 className="text-5xl md:text-7xl font-display text-primary mb-6">
-            {"I knew you'd say yes!"}
+            {"You said YES! WOOOOO"}
           </h2>
           <p className="text-xl md:text-2xl text-foreground leading-relaxed">
-            {"You've just made me the happiest person in the world. I can't wait to make every moment with you unforgettable."}
+            {"You've just made me the happiest person in the world. Happy Valentine's Day!"}
           </p>
           <div className="mt-8 flex justify-center gap-2">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -56,7 +56,7 @@ export function QuestionSection() {
           Will You Be My Valentine?
         </h2>
         <p className="text-lg md:text-xl text-muted-foreground mb-12 leading-relaxed">
-          {"Every love story is beautiful, but ours is my favorite. So here's the big question..."}
+          {"So here's the big question... what will you choose?"}
         </p>
         <div className="flex items-center justify-center gap-6">
           <button

@@ -12,7 +12,10 @@ export function LoveLetter() {
           </h2>
           <div className="space-y-4 text-foreground text-lg leading-relaxed">
             <p>
-              {"From the very first moment I saw you, I knew there was something different about you. Your smile lights up every room, and your laugh is my favorite sound in the world."}
+              {"I thought that you should know that..."}
+            </p>
+            <p>
+              {"You are so unbelievably beautiful + hot + pretty, Your smile lights up every room, and your laugh is my favorite sound in the world."}
             </p>
             <p>
               {"You make ordinary moments extraordinary just by being in them. Every day with you feels like the best day of my life."}
